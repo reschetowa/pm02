@@ -1,0 +1,89 @@
+Поиск наиболее длинной последовательности повторяющихся чисел
+using System;
+namespace Xenia
+{
+class Program
+{
+   static void Main()
+   {
+      Console.Write("Число элементов последовательности: ");
+      int n = Convert.ToInt32(Console.ReadLine());
+      // Генерация массива элементов
+      int[] a = new int[n];
+      Random r = new Random(); 
+      for (int i = 0; i < n; i++)
+      {
+         a[i] = r.Next(0, 20); // границы меняйте
+         Console.WriteLine(a[i]); // вывод для контроля
+      }
+      Console.WriteLine("Массив после сортировки по возрастанию:");
+      SortBooble(n, a); // вызов сортировки
+      for (int i = 0; i < n; i++)
+         Console.WriteLine(a[i]);
+      // подсчет длин каждой подпоследовательности
+      int[,] xk = new int[n, 2]; //массив значений x и k
+      int k; // длина текущей подпоследовательности, >0
+      int nMin = 0; // номер элемента первой подпоследовательности
+      // Найдем элемент и их количество
+      int x = Nmax(n, a, nMin, out k);
+      // Занесение в массив xk[,]
+      xk[0, 0] = x;
+      xk[0, 1] = k;
+      nMin += k; // начало следующей подпоследовательности
+      int j = 1; // счетчик количества подпоследовательностей >=1
+      // Анализ в цикле по остальным элементам и формирование массива xk[,]
+      while (nMin < n)
+      {
+         x = Nmax(n, a, nMin, out k);
+         xk[j, 0] = x;
+         xk[j, 1] = k;
+         j++;
+         nMin += k;
+      }
+      // вывод массива xk[,]
+      for (int i = 0; i < j; i++)
+         Console.WriteLine("x={0} k={1}", xk[i, 0], xk[i, 1]);
+      // Поиск в xk[,] номера с наибольшей длиной подпоследовательности
+      int nMax = 0;
+      int kMax = xk[0, 1];
+      for (int i = 1; i < j; i++)
+      if (xk[i, 1] >= kMax) // с наибольшим числом
+      {
+         kMax = xk[i, 1];
+         nMax = i;
+      }
+      // Вывод результата
+      Console.WriteLine("Ответ: {0}, всего {1} раз", xk[nMax,0], xk[nMax,1]);
+      Console.ReadKey();
+   }              // end of Main()
+   // Пузырьковая сортировка по возрастанию
+   static void SortBooble(int n, int[] b)
+   {
+      int temp;
+      for (int i = 0; i < n - 1; i++)
+      for (int j = 0; j < n - i - 1; j++)
+         if (b[j] > b[j + 1])
+         {
+            temp = b[j + 1];
+            b[j + 1] = b[j];
+            b[j] = temp;
+         }
+   }
+   // Наиболее часто встречаемый элемент массива и длина подпоследовательности
+   static int Nmax(int n, int[] b, int nMin, out int k)
+   {
+      int x = b[nMin];
+      k = 0; //счетчик подпоследовательности
+      int m = x; //следующее число
+      while (m == x) //пока они равны
+      {
+         k++;
+         if ((nMin + k) < n) // есть ли еще числа?
+            m = b[nMin + k]; //следующее число
+         else
+            break;
+      }
+      return x;
+   }
+ }
+}

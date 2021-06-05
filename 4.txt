@@ -1,0 +1,96 @@
+Исследуйте, как изменяется результат в зависимости от максимальной длины катета k. Обратите внимание на время решения задачи T (используйте секундомер). Является ли зависимость T=f (k) линейной, т.е. действительно ли T ~ k ?
+// Поиск пифагоровых троек
+using System;
+namespace ПИФ3
+{
+   class Program
+   {
+   // тройка (a,b,c)
+      struct pif1
+      {
+         public int a; // катет
+         public int b; // катет 
+         public int c; // гипотенуза
+         public int s; // плошадь
+         public void print_P() // вывод примитивных троек
+         {
+            int d = nod(c, nod(a, b));
+            if (d == 1)  // только, если НОД=1
+            {
+               Console.WriteLine("{0}\t{1}\t{2}\t{3}", a, b, c, s);
+               r++;  // подсчет их числа
+            }
+         }
+      }
+      // массив пифагоровых троек 
+      static pif1[] pif3 = new pif1[1000000];
+      // найдено троек (с НОД=1)
+      static int r = 0;
+      // Наибольший общий делитель (НОД)
+      static int nod(int x, int y)
+      {
+         while (x != y)
+         {
+            if (x > y)
+               x = x - y;
+            else
+               y = y - x;
+         }
+         return x;
+      }
+      // Прямой поиск троек, k - максимальная длина катета
+      static int poisk3(int k)
+      {
+         int n = 0; // счетчик
+         int x, y, w;
+         double z;
+         // Поиск троек целых чисел
+         for (x = 3; x <= k; x++)
+            for (y = x + 1; y <= k; y++)
+            {
+               z = x * x + y * y + 0.001;
+               w = Convert.ToInt32(Math.Sqrt(z));
+               if (Math.Abs(w * w - z) < 0.01)
+               {
+                  pif3[n].a = x;
+                  pif3[n].b = y;
+                  pif3[n].c = w;
+                  pif3[n].s = x * y / 2;
+                  n++;
+               }
+            }
+         return n;
+      }
+      // сортировка по возрастанию площадей треугольников
+      static void sort3(int n)
+      {
+         pif1 p;
+         for (int i = 0; i < n - 1; i++)
+            for (int j = i; j < n - 1; j++)
+               if (pif3[j].s > pif3[j + 1].s)
+               {
+                  p = pif3[j];
+                  pif3[j] = pif3[j + 1];
+                  pif3[j + 1] = p;
+               }
+      }
+      // вывод треугольников: a b c S 
+      static void output3(int n)
+      {
+         Console.WriteLine("Пифагоровы треугольники\n a       b       c       S");
+         for (int i = 0; i < n; i++)
+         pif3[i].print_P();
+         Console.WriteLine("Всего треугольников - {0}",r);
+         Console.ReadKey();
+      }
+      // главная
+      static void Main(string[] args)
+      {
+         Console.Write("Поиск Пифагоровых треугольников\nМаксимальная длина катета - ");
+         int k = Convert.ToInt32(Console.ReadLine());
+         int n = poisk3(k);
+         sort3(n);
+         output3(n);
+      }
+   }
+}
