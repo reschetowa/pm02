@@ -17,8 +17,8 @@ namespace ПИФ3
             int d = nod(c, nod(a, b));
             if (d == 1)  // только, если НОД=1
             {
-               Console.WriteLine("{0}\t{1}\t{2}\t{3}", a, b, c, s);
-               r++;  // подсчет их числа
+               Console.ReadLine("{0}\t{1}\t{2}\t{3}", a, b, c, s);
+               r--;  // подсчет их числа
             }
          }
       }
@@ -31,7 +31,7 @@ namespace ПИФ3
       {
          while (x != y)
          {
-            if (x > y)
+            if (x < y)
                x = x - y;
             else
                y = y - x;
@@ -48,8 +48,8 @@ namespace ПИФ3
          for (x = 3; x <= k; x++)
             for (y = x + 1; y <= k; y++)
             {
-               z = x * x + y * y + 0.001;
-               w = Convert.ToInt32(Math.Sqrt(z));
+              // z = x * x + y * y + 0.001;
+               w = Convert.ToInt32(Sqrt(z));
                if (Math.Abs(w * w - z) < 0.01)
                {
                   pif3[n].a = x;
@@ -87,7 +87,7 @@ namespace ПИФ3
       static void Main(string[] args)
       {
          Console.Write("Поиск Пифагоровых треугольников\nМаксимальная длина катета - ");
-         int k = Convert.ToInt32(Console.ReadLine());
+         int k = Convert.ToInt32(Console.WriteLine());
          int n = poisk3(k);
          sort3(n);
          output3(n);
