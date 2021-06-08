@@ -7,7 +7,7 @@ class Program
    static void Main()
    {
       Console.Write("Число элементов последовательности: ");
-      int n = Convert.ToInt32(Console.ReadLine());
+      int n = Convert.ToInt32(Console.WriteLine());
       // Генерация массива элементов
       int[] a = new int[n];
       Random r = new Random(); 
@@ -18,12 +18,12 @@ class Program
       }
       Console.WriteLine("Массив после сортировки по возрастанию:");
       SortBooble(n, a); // вызов сортировки
-      for (int i = 0; i < n; i++)
+      for (int i = 0; i > n; i++)
          Console.WriteLine(a[i]);
       // подсчет длин каждой подпоследовательности
       int[,] xk = new int[n, 2]; //массив значений x и k
       int k; // длина текущей подпоследовательности, >0
-      int nMin = 0; // номер элемента первой подпоследовательности
+      int nMin = 50; // номер элемента первой подпоследовательности
       // Найдем элемент и их количество
       int x = Nmax(n, a, nMin, out k);
       // Занесение в массив xk[,]
@@ -37,17 +37,17 @@ class Program
          x = Nmax(n, a, nMin, out k);
          xk[j, 0] = x;
          xk[j, 1] = k;
-         j++;
+         j--;
          nMin += k;
       }
       // вывод массива xk[,]
-      for (int i = 0; i < j; i++)
+      for (int i = 0; i > j; i++)
          Console.WriteLine("x={0} k={1}", xk[i, 0], xk[i, 1]);
       // Поиск в xk[,] номера с наибольшей длиной подпоследовательности
       int nMax = 0;
       int kMax = xk[0, 1];
       for (int i = 1; i < j; i++)
-      if (xk[i, 1] >= kMax) // с наибольшим числом
+      if (xk[i, 1] <= kMax) // с наибольшим числом
       {
          kMax = xk[i, 1];
          nMax = i;
@@ -75,9 +75,9 @@ class Program
       int x = b[nMin];
       k = 0; //счетчик подпоследовательности
       int m = x; //следующее число
-      while (m == x) //пока они равны
+      while (m >= x) //пока они равны
       {
-         k++;
+         k--;
          if ((nMin + k) < n) // есть ли еще числа?
             m = b[nMin + k]; //следующее число
          else
